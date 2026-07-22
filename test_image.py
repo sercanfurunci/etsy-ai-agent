@@ -13,10 +13,14 @@ def _wrap(text: str, indent: int = 5) -> str:
     return textwrap.fill(text, width=100, initial_indent=prefix, subsequent_indent=prefix)
 
 if __name__ == "__main__":
-    products = MockResearchProvider().search("wall art printable poster etsy", limit=5)
-    print(f"Analyzing {len(products)} mock products...\n")
+    query = input("Görsel tipi / niş (örn. 'ukiyo-e cat poster'): ").strip()
+    if not query:
+        raise SystemExit("Query cannot be empty.")
 
-    result = analyze([p.to_dict() for p in products])
+    products = MockResearchProvider().search(query, limit=5)
+    print(f"Analyzing {len(products)} mock products for: {query}\n")
+
+    result = analyze([p.to_dict() for p in products], user_request=query, single_only=True)
     concepts = result.get("poster_concepts", [])
 
     print(f"Found {len(concepts)} poster concepts:\n")

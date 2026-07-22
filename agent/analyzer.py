@@ -12,7 +12,7 @@ Analyze the following research data and return ONLY a valid JSON object — no m
 
 Research data:
 {dataset}
-
+{user_request_section}
 Return this exact JSON structure:
 {{
   "niche": "string — one-line description of the wall art niche",
@@ -42,21 +42,45 @@ Return this exact JSON structure:
 }}
 
 Rules:
-- Every poster concept must be expandable into a coherent collection of 5–20 related prints.
+- Concepts may be single standalone posters or coordinated sets of 2–5. Do not default to sets — propose a single poster unless the niche clearly benefits from a series.
 - For sets, all prints must share the same visual style, compatible colour palette, consistent composition, and related subjects.
 - image_generation_prompt must produce ONLY the flat artwork: no frame, no room, no wall, no mockup, no watermark.
 - Do NOT name any specific artist in image_generation_prompt. Describe the historical period and visual technique instead (e.g. "late Edo period woodblock print style" not "Hokusai style").
 - Do NOT use contradictory background instructions. If the artwork needs a plain background, specify "cream washi paper background" or "off-white paper texture" — never "no background".
 - suggested_etsy_tags must contain EXACTLY 13 tags.
 - aspect_ratio must be expressed as a ratio only (e.g. 2:3) — do not add paper size names.
-- Return at least 3 poster concepts.
+- Return exactly {count} poster concepts.
 - Output JSON only.
 """
 
 
-def analyze(products: list[dict]) -> dict:
+def analyze(
+    products: list[dict],
+    user_request: str | None = None,
+    single_only: bool = False,
+    count: int = 3,
+    avoid_names: list[str] | None = None,
+) -> dict:
     dataset_str = json.dumps(products, indent=2)
-    prompt = PROMPT_TEMPLATE.format(dataset=dataset_str)
+    user_request_section = (
+        f"\nThe user specifically wants poster concepts in this niche/style: \"{user_request}\". "
+        f"All returned poster_concepts must fit this request — use the research data only for market "
+        f"signals (pricing, tags, what sells), not for subject matter.\n"
+        if user_request else ""
+    )
+    if single_only:
+        user_request_section += (
+            "\nEvery poster_concept must be a single standalone poster: "
+            "\"single_or_set\" must be exactly \"single\" and \"set_consistency_notes\" must be \"n/a\". "
+            "Do not propose sets or series.\n"
+        )
+    if avoid_names:
+        joined = "; ".join(avoid_names)
+        user_request_section += (
+            f"\nThese concept names/subjects are already used — propose different subjects, "
+            f"do not repeat or near-duplicate them: {joined}\n"
+        )
+    prompt = PROMPT_TEMPLATE.format(dataset=dataset_str, user_request_section=user_request_section, count=count)
     raw = ask(prompt)
 
     raw = raw.strip()
