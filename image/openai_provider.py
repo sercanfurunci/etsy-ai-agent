@@ -22,7 +22,7 @@ class OpenAIImageProvider(ImageProvider):
             model=MODEL,
             prompt=prompt,
             n=1,
-            size="1088x1920",
+            size="1536x2304",
         )
 
         image_data = base64.b64decode(response.data[0].b64_json)
