@@ -1,7 +1,16 @@
 # ponytail: temporary test — generates a batch of poster ideas, then an image for each, sequentially
+import os
 from agent.ukiyoe_prompt_generator import generate_batch
 from agent.prompt_optimizer import optimize
-from image.openai_provider import OpenAIImageProvider
+
+
+def _make_provider():
+    provider_name = os.getenv("IMAGE_PROVIDER", "openai").lower()
+    if provider_name == "bfl":
+        from image.bfl_provider import BFLImageProvider
+        return BFLImageProvider()
+    from image.openai_provider import OpenAIImageProvider
+    return OpenAIImageProvider()
 
 TOTAL_IDEAS = 10
 
@@ -19,7 +28,8 @@ if __name__ == "__main__":
     if confirm != "y":
         raise SystemExit("Aborted.")
 
-    provider = OpenAIImageProvider()
+    provider = _make_provider()
+    print(f"  provider: {os.getenv('IMAGE_PROVIDER', 'openai')}\n")
     results = []
 
     print()
