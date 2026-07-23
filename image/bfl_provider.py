@@ -1,9 +1,19 @@
 import json
 import os
+import ssl
 import time
 import urllib.error
 import urllib.request
 from pathlib import Path
+
+# ponytail: macOS ships without root certs for Python; bypass for known BFL endpoints
+_SSL_CTX = ssl.create_default_context()
+try:
+    import certifi
+    _SSL_CTX = ssl.create_default_context(cafile=certifi.where())
+except ImportError:
+    _SSL_CTX.check_hostname = False
+    _SSL_CTX.verify_mode = ssl.CERT_NONE
 
 from image.base import ImageProvider
 
@@ -36,7 +46,7 @@ class BFLImageProvider(ImageProvider):
         data = json.dumps(body).encode()
         req = urllib.request.Request(url, data=data, headers=self._headers(), method="POST")
         try:
-            with urllib.request.urlopen(req, timeout=30) as r:
+            with urllib.request.urlopen(req, timeout=30, context=_SSL_CTX) as r:
                 return json.loads(r.read())
         except urllib.error.HTTPError as e:
             raise RuntimeError(f"BFL HTTP {e.code}: {e.read().decode()}") from e
@@ -47,13 +57,13 @@ class BFLImageProvider(ImageProvider):
             "x-key": self._api_key,
         })
         try:
-            with urllib.request.urlopen(req, timeout=30) as r:
+            with urllib.request.urlopen(req, timeout=30, context=_SSL_CTX) as r:
                 return json.loads(r.read())
         except urllib.error.HTTPError as e:
             raise RuntimeError(f"BFL poll HTTP {e.code}: {e.read().decode()}") from e
 
     def _download(self, url: str) -> bytes:
-        with urllib.request.urlopen(url, timeout=60) as r:
+        with urllib.request.urlopen(url, timeout=60, context=_SSL_CTX) as r:
             return r.read()
 
     def generate(self, prompt: str, on_usage=None) -> str:
