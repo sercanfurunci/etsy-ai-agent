@@ -4,12 +4,19 @@ No API calls — everything here is pure dataset/random-selection logic.
 """
 import pytest
 
+import json
+from unittest.mock import patch
+
 from agent.ukiyoe_prompt_generator import (
     load_dataset,
     generate_batch,
     HISTORY_PATH,
+    DATASET_PATH,
+    DRAMATIC_MOODS,
+    QUIET_MOODS,
     _dedup_key,
     _bucket_tag,
+    _validate_batch,
     SEASON_BUCKET_TAGS,
     DAYPART_TAGS,
     OPPOSITE_SEASON,
@@ -99,3 +106,103 @@ def test_titles_are_unique_within_a_batch():
 def test_dedup_key_normalizes_punctuation_case_and_articles():
     assert _dedup_key("A Study of Fox") == _dedup_key("study of fox")
     assert _dedup_key("The Fox — At Dusk") == _dedup_key("fox at dusk")
+
+
+# ── _validate_batch direct unit tests ─────────────────────────────────────────
+
+def _item(**overrides):
+    """Minimal valid GeneratedConcept dict for _validate_batch."""
+    base = {
+        "genre": "landscape",
+        "paletteId": "pal-neutral",
+        "compositionId": "comp-horizontal",
+        "environmentId": "env-mountain",
+        "symbolismId": "sym-perseverance",
+        "nocturnal": False,
+        "minimalComposition": False,
+        "subjectRole": "human",
+        "moodId": "dramatic",
+        "title": "Untitled",
+    }
+    base.update(overrides)
+    return base
+
+
+def _valid_batch():
+    """10 items that satisfy every hard constraint in _validate_batch."""
+    roles = ["human", "animal", "architectural"] + ["human"] * 7
+    moods = ["dramatic"] + ["tranquil"] * 9
+    items = []
+    for i in range(10):
+        items.append(_item(
+            title=f"Title {i}",
+            subjectRole=roles[i],
+            genre=f"genre-{i}",          # all distinct → no cap hit
+            paletteId=f"pal-{i}",        # 10 distinct, no cap hit
+            compositionId=f"comp-{i}",   # 10 distinct, no cap hit
+            environmentId=f"env-{i}",    # all distinct
+            symbolismId=f"sym-{i}",      # all distinct
+            moodId=moods[i],
+        ))
+    return items
+
+
+def test_validate_batch_passes_on_valid_batch():
+    hard, _ = _validate_batch(_valid_batch())
+    assert hard == []
+
+
+def test_validate_batch_detects_duplicate_titles():
+    items = _valid_batch()
+    items[0]["title"] = items[1]["title"] = "Same Title"
+    hard, _ = _validate_batch(items)
+    assert any("duplicate" in msg for msg in hard)
+
+
+def test_validate_batch_detects_missing_required_role():
+    items = _valid_batch()
+    for item in items:
+        item["subjectRole"] = "human"  # remove animal and architectural
+    hard, _ = _validate_batch(items)
+    assert any("animal" in msg or "architectural" in msg for msg in hard)
+
+
+def test_validate_batch_caps_genre_frequency():
+    items = _valid_batch()
+    for item in items:
+        item["genre"] = "landscape"  # 10 of the same genre, cap is 2
+    hard, _ = _validate_batch(items)
+    assert any("genre" in msg for msg in hard)
+
+
+def test_validate_batch_requires_five_distinct_compositions():
+    items = _valid_batch()
+    for item in items:
+        item["compositionId"] = "comp-only"
+    hard, _ = _validate_batch(items)
+    assert any("composition" in msg for msg in hard)
+
+
+# ── History persistence ────────────────────────────────────────────────────────
+
+def test_history_file_written_after_batch():
+    assert not HISTORY_PATH.exists()
+    generate_batch(5, seed=7)
+    assert HISTORY_PATH.exists()
+    data = json.loads(HISTORY_PATH.read_text())
+    assert "genre" in data or "titleNormalized" in data  # at least one axis tracked
+
+
+# ── Dataset loading ────────────────────────────────────────────────────────────
+
+def test_load_dataset_raises_for_missing_file(tmp_path):
+    import agent.ukiyoe_prompt_generator as mod
+    original = mod._dataset_cache
+    mod._dataset_cache = None
+    try:
+        fake_path = tmp_path / "missing.json"
+        with patch.object(mod, "DATASET_PATH", fake_path):
+            with pytest.raises(FileNotFoundError, match="build_dataset"):
+                load_dataset()
+    finally:
+        mod._dataset_cache = original

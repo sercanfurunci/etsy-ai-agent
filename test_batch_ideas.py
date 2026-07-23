@@ -1,5 +1,6 @@
 # ponytail: temporary test — generates a batch of poster ideas, then an image for each, sequentially
 from agent.ukiyoe_prompt_generator import generate_batch
+from agent.prompt_optimizer import optimize
 from image.openai_provider import OpenAIImageProvider
 
 TOTAL_IDEAS = 10
@@ -28,7 +29,10 @@ if __name__ == "__main__":
         print(f"  {concept['imagePrompt']}")
 
         try:
-            path = provider.generate(concept["imagePrompt"])
+            print(f"  optimizing prompt...")
+            opt = optimize(concept, concept["imagePrompt"], concept["negativePrompt"])
+            final_prompt = opt["optimized_image_prompt"]
+            path = provider.generate(final_prompt)
             print(f"  [OK] {path}")
             results.append((title, path, None))
         except Exception as e:

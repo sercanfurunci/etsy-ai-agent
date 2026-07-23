@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "anthropic": {
+    "claude-haiku-4-5-20251001": {
+      "input_per_mtok": null,
+      "output_per_mtok": null
+    }
+  },
+  "openai_image": {
+    "gpt-image-2": {
+      "per_image": {
+        "1536x2304": null
+      }
+    }
+  }
+}

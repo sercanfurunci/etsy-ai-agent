@@ -239,12 +239,20 @@ def _compute_overall(scores: list[int]) -> int:
     return round(sum(scores) / len(scores))
 
 
-def _claude(client: anthropic.Anthropic, prompt: str) -> dict:
+def _claude(client: anthropic.Anthropic, prompt: str, on_usage=None) -> dict:
     message = client.messages.create(
         model=MODEL,
         max_tokens=_MAX_TOKENS,
         messages=[{"role": "user", "content": prompt}],
     )
+    if on_usage is not None:
+        on_usage({
+            "provider": "anthropic",
+            "model": MODEL,
+            "call_type": "text",
+            "input_tokens": message.usage.input_tokens,
+            "output_tokens": message.usage.output_tokens,
+        })
     raw = message.content[0].text.strip()
     raw = re.sub(r"^```(?:json)?\s*", "", raw, flags=re.IGNORECASE)
     raw = re.sub(r"\s*```\s*$", "", raw)
@@ -404,6 +412,7 @@ def _validate(plan: ListingPlan) -> None:
 def generate_listing_plan(
     collection_plan: CollectionPlan,
     mockup_plan: MockupPlan,
+    on_usage=None,
 ) -> ListingPlan:
     if not ANTHROPIC_API_KEY:
         raise ValueError("ANTHROPIC_API_KEY is not set in .env")
@@ -416,7 +425,7 @@ def generate_listing_plan(
     )
 
     print("  Generating listing package...")
-    d = _claude(client, prompt)
+    d = _claude(client, prompt, on_usage=on_usage)
 
     # ── Parse download package ─────────────────────────────────────────────────
     dp = d["download_package"]

@@ -67,13 +67,13 @@ Return ONLY a valid JSON object — no markdown, no commentary:
 """
 
 
-def optimize(concept: dict, image_prompt: str, negative_prompt: str) -> dict:
+def optimize(concept: dict, image_prompt: str, negative_prompt: str, on_usage=None) -> dict:
     prompt = OPTIMIZER_PROMPT.format(
         concept=json.dumps(concept, indent=2),
         image_prompt=image_prompt,
         negative_prompt=negative_prompt,
     )
-    raw = ask(prompt).strip()
+    raw = ask(prompt, on_usage=on_usage).strip()
     if raw.startswith("```"):
         raw = raw.split("```")[1]
         if raw.startswith("json"):

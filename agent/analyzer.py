@@ -60,6 +60,7 @@ def analyze(
     single_only: bool = False,
     count: int = 3,
     avoid_names: list[str] | None = None,
+    on_usage=None,
 ) -> dict:
     dataset_str = json.dumps(products, indent=2)
     user_request_section = (
@@ -81,7 +82,7 @@ def analyze(
             f"do not repeat or near-duplicate them: {joined}\n"
         )
     prompt = PROMPT_TEMPLATE.format(dataset=dataset_str, user_request_section=user_request_section, count=count)
-    raw = ask(prompt)
+    raw = ask(prompt, on_usage=on_usage)
 
     raw = raw.strip()
     if raw.startswith("```"):

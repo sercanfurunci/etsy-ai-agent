@@ -42,3 +42,10 @@ Thumbs.db
 
 # Claude Code local settings
 .claude/
+
+# Job queue runtime state
+# queue.json files store local absolute paths and are machine-specific.
+# Do not commit unless all machines share the same path layout.
+queues/
+# Lock files should never be committed
+.queue.lock

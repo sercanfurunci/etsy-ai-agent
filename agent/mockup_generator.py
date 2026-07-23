@@ -331,12 +331,20 @@ def _compute_overall(scores: list[int]) -> int:
     return round(sum(scores) / len(scores))
 
 
-def _claude(client: anthropic.Anthropic, prompt: str) -> dict:
+def _claude(client: anthropic.Anthropic, prompt: str, on_usage=None) -> dict:
     message = client.messages.create(
         model=MODEL,
         max_tokens=_MAX_TOKENS,
         messages=[{"role": "user", "content": prompt}],
     )
+    if on_usage is not None:
+        on_usage({
+            "provider": "anthropic",
+            "model": MODEL,
+            "call_type": "text",
+            "input_tokens": message.usage.input_tokens,
+            "output_tokens": message.usage.output_tokens,
+        })
     raw = message.content[0].text.strip()
     raw = re.sub(r"^```(?:json)?\s*", "", raw, flags=re.IGNORECASE)
     raw = re.sub(r"\s*```\s*$", "", raw)
@@ -570,6 +578,7 @@ def generate_mockup_plan(
     include_collection_mockup: bool = True,
     include_hero_mockup: bool = True,
     rendering_mode: str = _DEFAULT_RENDERING_MODE,
+    on_usage=None,
 ) -> MockupPlan:
     if not ANTHROPIC_API_KEY:
         raise ValueError("ANTHROPIC_API_KEY is not set in .env")
@@ -598,7 +607,7 @@ def generate_mockup_plan(
         collection_size=size,
         immutable_block=_IMMUTABLE_BLOCK,
         artwork_reference_rules=_ARTWORK_REFERENCE_RULES,
-    ))
+    ), on_usage=on_usage)
 
     shared_rules = d1.get("shared_mockup_rules", [])
     forbidden = d1.get("forbidden_mockup_elements", [])
@@ -638,7 +647,7 @@ def generate_mockup_plan(
         shared_rules="\n".join(f"- {r}" for r in shared_rules),
         immutable_block=_IMMUTABLE_BLOCK,
         artwork_reference_rules=_ARTWORK_REFERENCE_RULES,
-    ))
+    ), on_usage=on_usage)
 
     collection_mockup: CollectionMockup | None = None
     if include_collection_mockup and "collection_mockup" in d2:

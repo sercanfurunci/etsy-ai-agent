@@ -91,6 +91,7 @@ def prepare_retry(
     optimized_prompt: str,
     optimized_negative_prompt: str,
     vision_report: VisionReport,
+    on_usage=None,
 ) -> RetryPlan:
     should_retry, decision_reason = _should_retry(vision_report)
 
@@ -116,7 +117,7 @@ def prepare_retry(
         suggestions="; ".join(vision_report.improvement_suggestions) or "none specified",
     )
 
-    raw = ask(prompt).strip()
+    raw = ask(prompt, on_usage=on_usage).strip()
     if raw.startswith("```"):
         raw = raw.split("```")[1]
         if raw.startswith("json"):

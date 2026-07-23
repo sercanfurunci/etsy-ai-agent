@@ -15,7 +15,7 @@ class OpenAIImageProvider(ImageProvider):
             raise ValueError("OPENAI_API_KEY is not set in .env")
         self._client = OpenAI(api_key=OPENAI_API_KEY)
 
-    def generate(self, prompt: str) -> str:
+    def generate(self, prompt: str, on_usage=None) -> str:
         OUTPUT_DIR.mkdir(exist_ok=True)
 
         response = self._client.images.generate(
@@ -30,4 +30,12 @@ class OpenAIImageProvider(ImageProvider):
         slug = "".join(c if c.isalnum() else "_" for c in prompt[:40]).strip("_")
         file_path = OUTPUT_DIR / f"{slug}.png"
         file_path.write_bytes(image_data)
-        return str(file_path)
+        if on_usage is not None:
+            on_usage({
+                "provider": "openai",
+                "model": MODEL,
+                "call_type": "image",
+                "image_count": 1,
+                "image_size": "1536x2304",
+            })
+        return str(file_path.resolve())

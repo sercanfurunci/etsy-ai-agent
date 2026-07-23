@@ -211,17 +211,333 @@ Your API keys should never appear in any tracked file.
 
 ---
 
+## Job queue
+
+Batch multiple production requests and process them sequentially:
+
+```bash
+# Create a queue
+python3 scripts/run_queue.py create queues/my_batch
+
+# Add jobs (no API calls)
+python3 scripts/run_queue.py add queues/my_batch --query "Vintage Japanese nature" --collection-size 4
+python3 scripts/run_queue.py add queues/my_batch --query "Cozy frog wizard" --collection-size 4
+
+# Run all pending jobs
+python3 scripts/run_queue.py run queues/my_batch
+
+# Resume after interruption
+python3 scripts/run_queue.py resume queues/my_batch
+
+# Inspect status
+python3 scripts/run_queue.py list queues/my_batch
+
+# Cancel a pending job
+python3 scripts/run_queue.py cancel queues/my_batch job_002
+
+# Remove a stale lock (after a crash)
+python3 scripts/run_queue.py unlock queues/my_batch --force
+```
+
+Queue state is persisted to `queues/my_batch/queue.json` after every transition.
+Production outputs remain under the configured `--output-root` (not inside the queue directory).
+Only one queue runner may execute at a time — a `.queue.lock` file prevents accidental parallel launches.
+
+---
+
+---
+
+## Print Export (Stage 11.1)
+
+Export poster images to standard print sizes at 300 DPI. This step is **optional and manual** — run it after a production run to get print-ready files.
+
+### CLI examples
+
+```bash
+# Export all supported sizes
+python3 scripts/export_prints.py outputs/my_run --all
+
+# Export specific sizes
+python3 scripts/export_prints.py outputs/my_run --sizes 2x3 4x5 11x14
+
+# ISO A-series in JPG
+python3 scripts/export_prints.py outputs/my_run --sizes A4 A3 --format jpg
+
+# Fill crop mode (center-crop to fill canvas)
+python3 scripts/export_prints.py outputs/my_run --sizes 2x3 --crop fill
+
+# Custom background color with pad mode
+python3 scripts/export_prints.py outputs/my_run --sizes 4x5 --crop pad --background "#F5F0E8"
+
+# Enable upscaling for small sources
+python3 scripts/export_prints.py outputs/my_run --all --upscale
+
+# Overwrite existing exports
+python3 scripts/export_prints.py outputs/my_run --all --overwrite
+
+# Machine-readable JSON output
+python3 scripts/export_prints.py outputs/my_run --all --json
+```
+
+### Python API
+
+```python
+from agent.print_export import export_prints
+
+result = export_prints(
+    "outputs/my_run",
+    sizes=["2x3", "A4", "11x14"],   # None = all 12 sizes
+    crop_mode="fit",                  # "fit" | "fill" | "pad"
+    output_format="png",              # "png" | "jpg"
+    upscale=False,
+    background_color="#FFFFFF",
+    overwrite=False,
+)
+```
+
+### Output layout
+
+```
+outputs/my_run/
+  exports/
+    poster_01/
+      2x3/
+        poster.png
+      A4/
+        poster.png
+      metadata.json     ← per-poster export records + SHA256
+    poster_02/
+      ...
+    export_manifest.json  ← counts, settings, all poster records
+```
+
+### Supported sizes (300 DPI)
+
+| Name  | Physical size    | Pixels         |
+|-------|-----------------|----------------|
+| 2x3   | 2×3 in          | 600×900        |
+| 3x4   | 3×4 in          | 900×1200       |
+| 4x5   | 4×5 in          | 1200×1500      |
+| 5x7   | 5×7 in          | 1500×2100      |
+| 11x14 | 11×14 in        | 3300×4200      |
+| 16x20 | 16×20 in        | 4800×6000      |
+| 18x24 | 18×24 in        | 5400×7200      |
+| 24x36 | 24×36 in        | 7200×10800     |
+| A5    | 148×210 mm      | 1748×2480      |
+| A4    | 210×297 mm      | 2480×3508      |
+| A3    | 297×420 mm      | 3508×4961      |
+| A2    | 420×594 mm      | 4961×7016      |
+
+### Crop modes
+
+| Mode | Behavior |
+|------|----------|
+| `fit` | Fit artwork within target, add padding if ratios differ. Never crops, never stretches. |
+| `fill` | Scale to cover target fully, center-crop the excess. Never stretches. |
+| `pad` | Identical rendering to `fit`; semantically explicit about placing artwork on a colored canvas. |
+
+### Upscaling behavior
+
+- `upscale=False` (default): artwork is never enlarged beyond its source pixel dimensions. The output canvas is still the full target size — artwork is centered and the background fills the rest. A warning is recorded in `ExportRecord.warnings` when the source is smaller than the 300 DPI target.
+- `upscale=True`: LANCZOS enlargement is used. `ExportRecord.upscaled` is set to `True` and `scale_factor` records the multiplier.
+
+### DPI note
+
+DPI is embedded in file metadata only (PNG pHYs chunk / JPEG APP0). No new detail or resolution is created — upscaling via LANCZOS interpolates pixels from the source image.
+
+### Overwrite behavior
+
+- `overwrite=False` (default): if an output file already exists, it is skipped and recorded in `PosterExportResult.failed` with the reason `"file exists, use overwrite=True"`. Source files are never touched.
+- `overwrite=True`: existing output files are replaced atomically (write to `.tmp`, then `os.replace()`).
+
+---
+
+## Package Builder (Stage 11.2–11.3)
+
+Assembles a production run's outputs into a clean, customer-ready folder and (optionally) a ZIP archive. This step is **optional and manual** — run it after `export_prints` to create a distributable download package.
+
+### CLI examples
+
+```bash
+# Basic package (no ZIP)
+python3 scripts/build_package.py outputs/my_run
+
+# With ZIP archive
+python3 scripts/build_package.py outputs/my_run --zip
+
+# Allow overwriting an existing package
+python3 scripts/build_package.py outputs/my_run --overwrite
+
+# Skip individual sections
+python3 scripts/build_package.py outputs/my_run --no-mockups
+python3 scripts/build_package.py outputs/my_run --no-listing
+python3 scripts/build_package.py outputs/my_run --no-prints
+python3 scripts/build_package.py outputs/my_run --no-metadata
+
+# Machine-readable JSON output
+python3 scripts/build_package.py outputs/my_run --json
+
+# Combine flags
+python3 scripts/build_package.py outputs/my_run --zip --overwrite --json
+```
+
+### Python API
+
+```python
+from agent.package_builder import build_package
+
+result = build_package(
+    "outputs/my_run",
+    include_prints=True,    # copy Printable Files (exports/)
+    include_mockups=True,   # copy Mockups section
+    include_listing=True,   # copy Listing files
+    include_metadata=True,  # copy manifest.json, request.json, etc.
+    create_zip=False,       # create ZIP archive beside package folder
+    overwrite=False,        # raise ValueError if package dir already exists
+)
+
+print(result.package_path)      # absolute path to package directory
+print(result.zip_path)          # absolute path to ZIP (or None)
+print(result.manifest.total_files)
+print(result.warnings)          # list of non-fatal warnings
+```
+
+### Output folder layout
+
+```
+outputs/my_run/
+  packages/
+    package_YYYYMMDD_HHMMSS/
+        Printable Files/
+            poster_01/
+                2x3/
+                    poster.png
+                A4/
+                    poster.png
+            poster_02/
+                ...
+        Preview Images/
+            poster_01.png
+            poster_02.png
+        Mockups/
+            poster_01/
+                mockup_1.png
+        Listing/
+            listing.json
+            description.txt
+        Metadata/
+            manifest.json
+            request.json
+            export_manifest.json
+            exports/
+                poster_01/
+                    metadata.json
+        README.txt
+        LICENSE.txt
+        package_manifest.json
+    package_YYYYMMDD_HHMMSS.zip   ← only when --zip
+```
+
+### What each folder contains
+
+| Folder | Contents |
+|--------|----------|
+| `Printable Files/` | High-resolution print-ready exports at 300 DPI (from `exports/`) |
+| `Preview Images/` | Master final.png renamed to `poster_XX.png` (from `images/`) |
+| `Mockups/` | Room and frame preview images (from `mockups/`) |
+| `Listing/` | Product listing text, description, and SEO tags (from `listing/`) |
+| `Metadata/` | Technical metadata: manifest.json, request.json, export records |
+| `README.txt` | Customer instructions and printing recommendations |
+| `LICENSE.txt` | Commercial use license |
+| `package_manifest.json` | Machine-readable build record with SHA256 for every file |
+
+### ZIP export
+
+Pass `create_zip=True` (or `--zip` in CLI). The ZIP is written atomically (`.tmp` then `os.replace()`). It stores paths relative to the package folder root — no absolute paths. The archive extracts cleanly to a single folder.
+
+### Overwrite behavior
+
+- `overwrite=False` (default): raises `ValueError` if a package directory with the same timestamp name already exists. Source files are never touched.
+- `overwrite=True`: removes and recreates the package directory.
+- Source files (`images/`, `exports/`, `listing/`, etc.) are **never modified, moved, or deleted**.
+
+### Known limitations
+
+- Requires `export_prints()` to have been run first when `include_prints=True` (exports/ must exist).
+- Requires listing generation to have been run when `include_listing=True` (listing/ must exist).
+- The `package_manifest.json` SHA256 entry for itself may not reflect the final written file (self-referential limitation).
+
+---
+
+## Provider Selection (Stage 15.1)
+
+Set `IMAGE_PROVIDER` in `.env` to choose how images are generated:
+
+| Value | Description |
+|-------|-------------|
+| `openai` (default) | gpt-image-2 via OpenAI API — requires `OPENAI_API_KEY` |
+| `comfyui_sdxl` | SDXL via a locally running ComfyUI instance — zero API cost |
+| `comfyui_flux_schnell` | FLUX.1 Schnell via a locally running ComfyUI instance — zero API cost |
+
+```bash
+# .env
+IMAGE_PROVIDER=comfyui_sdxl
+COMFYUI_SDXL_CHECKPOINT=juggernautXL.safetensors
+```
+
+### Local ComfyUI setup
+
+ComfyUI must be installed and running separately on the same computer. This repository does NOT install ComfyUI or download model weights.
+
+1. Install ComfyUI: https://github.com/comfyanonymous/ComfyUI
+2. Download model weights into ComfyUI's `models/` folder
+3. Start ComfyUI: `python main.py`
+4. Set `IMAGE_PROVIDER` and model filenames in `.env`
+
+Test the connection:
+
+```bash
+python3 scripts/test_image_provider.py --provider comfyui_sdxl --health
+python3 scripts/test_image_provider.py --provider comfyui_flux_schnell --health
+```
+
+Generate a test image:
+
+```bash
+python3 scripts/test_image_provider.py \
+    --provider comfyui_sdxl \
+    --prompt "ukiyo-e crane over misty river" \
+    --output test_out.png
+```
+
+Dump a workflow without HTTP (ComfyUI can be off):
+
+```bash
+python3 scripts/test_image_provider.py \
+    --provider comfyui_sdxl --dump-workflow \
+    --prompt "test" --output /dev/null
+```
+
+**Required env vars for SDXL:**
+- `COMFYUI_SDXL_CHECKPOINT` — safetensors filename in ComfyUI's `models/checkpoints/`
+
+**Required env vars for FLUX Schnell:**
+- `COMFYUI_FLUX_UNET`, `COMFYUI_FLUX_CLIP_L`, `COMFYUI_FLUX_T5XXL`, `COMFYUI_FLUX_VAE`
+
+See `.env.example` for all optional tuning variables.
+
+---
+
 ## Current limitations
 
-- Image generation uses 1024×1024 square output (gpt-image-2 default); final print files require upscaling
 - Vision critique uses Claude's base vision — not fine-tuned for print quality
-- No resume capability: failed runs restart from stage 1
+- Interrupted runs can be resumed via `resume_production(run_dir)` or `resume_queue(queue_dir)` — completed stages are not re-executed
 - No Etsy API integration; listings are generated as JSON, not uploaded
 - Collection size is capped at 8 posters per run
+- Queue processes one job at a time (no parallel workers)
+- ComfyUI providers only accept localhost connections (127.0.0.1 / localhost / ::1)
 
 ## Planned next stages
 
-- Stage 10.2: Resume interrupted production runs
-- Stage 17: Upscaling / print-ready export (2:3 ratio, 300 DPI equivalent)
 - Stage 18: Etsy API draft listing upload
 - Stage 19: A/B variation runner

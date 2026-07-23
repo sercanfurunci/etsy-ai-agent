@@ -67,7 +67,7 @@ def _image_factory(tmp_path: Path):
     def factory():
         provider = MagicMock()
 
-        def generate(prompt: str) -> str:
+        def generate(prompt, **kwargs) -> str:
             counter[0] += 1
             path = tmp_path / f"generated_{counter[0]}.png"
             path.write_bytes(b"\x89PNG\r\n\x1a\n")
@@ -83,7 +83,7 @@ def _vr_seq(*retry_flags: bool):
     """vision_review returning retry_recommended=flags in sequence (last repeats)."""
     calls = [0]
 
-    def vision_review(concept, prompt, neg, path):
+    def vision_review(concept, prompt, neg, path, **kwargs):
         idx = min(calls[0], len(retry_flags) - 1)
         retry = retry_flags[idx]
         calls[0] += 1
@@ -100,7 +100,7 @@ def _rp_seq(*should_retry_flags: bool):
     """prepare_retry returning should_retry=flags in sequence (last repeats)."""
     calls = [0]
 
-    def prepare_retry(concept, prompt, neg, vr):
+    def prepare_retry(concept, prompt, neg, vr, **kwargs):
         idx = min(calls[0], len(should_retry_flags) - 1)
         retry = should_retry_flags[idx]
         calls[0] += 1
@@ -399,3 +399,12 @@ def test_selected_concept_index_zero_rejected(tmp_path):
     )
     with pytest.raises(ValueError, match="selected_concept_index"):
         run_production(req, _deps=MagicMock())
+
+
+def test_analyze_called_with_user_request(tmp_path):
+    deps = _make_deps(tmp_path)
+    req = _request(tmp_path, query="japanese mountain art")
+    run_production(req, _deps=deps)
+    deps.analyze.assert_called_once()
+    _, kwargs = deps.analyze.call_args
+    assert kwargs.get("user_request") == "japanese mountain art"

@@ -419,13 +419,21 @@ def _is_truncated_error(error_msg: str, raw: str) -> bool:
     return bool(stripped) and stripped[-1] not in ("}", "]", '"')
 
 
-def _raw_call(client: anthropic.Anthropic, prompt: str) -> str:
+def _raw_call(client: anthropic.Anthropic, prompt: str, on_usage=None) -> str:
     """Single Claude API call. Returns raw response text."""
     msg = client.messages.create(
         model=MODEL,
         max_tokens=_MAX_TOKENS,
         messages=[{"role": "user", "content": prompt}],
     )
+    if on_usage is not None:
+        on_usage({
+            "provider": "anthropic",
+            "model": MODEL,
+            "call_type": "text",
+            "input_tokens": msg.usage.input_tokens,
+            "output_tokens": msg.usage.output_tokens,
+        })
     return msg.content[0].text.strip()
 
 
@@ -452,9 +460,9 @@ def _parse_with_diagnostics(
         raise _TruncatedResponseError(msg) if likely else RuntimeError(msg)
 
 
-def _claude(client: anthropic.Anthropic, prompt: str) -> dict:
+def _claude(client: anthropic.Anthropic, prompt: str, on_usage=None) -> dict:
     """Parse and return JSON from Claude. Used for Bible and evaluation calls (no retry)."""
-    raw = _raw_call(client, prompt)
+    raw = _raw_call(client, prompt, on_usage=on_usage)
     cleaned = re.sub(r"^```(?:json)?\s*", "", raw, flags=re.IGNORECASE)
     cleaned = re.sub(r"\s*```\s*$", "", cleaned).strip()
     try:
@@ -568,17 +576,18 @@ def _generate_batch(
     prompt: str,
     stage: str,
     requested_indexes: list[int],
+    on_usage=None,
 ) -> dict:
     """
     Call Claude for one poster batch.
     On likely truncation: retry once with a compact-JSON suffix.
     Non-truncation parse failures propagate immediately.
     """
-    raw = _raw_call(client, prompt)
+    raw = _raw_call(client, prompt, on_usage=on_usage)
     try:
         return _parse_with_diagnostics(raw, stage, requested_indexes)
     except _TruncatedResponseError:
-        raw2 = _raw_call(client, prompt + _COMPACT_SUFFIX)
+        raw2 = _raw_call(client, prompt + _COMPACT_SUFFIX, on_usage=on_usage)
         return _parse_with_diagnostics(raw2, f"{stage}[retry]", requested_indexes)
 
 
@@ -684,6 +693,7 @@ def generate_collection(
     optimized_negative_prompt: str,
     vision_report: VisionReport | None = None,
     collection_size: int | None = None,
+    on_usage=None,
 ) -> CollectionPlan:
     size = _infer_size(poster_concept, collection_size)
 
@@ -712,7 +722,7 @@ def generate_collection(
         vision_notes=vision_notes,
         collection_size=size,
         printable_rules=_PRINTABLE_RULES,
-    ))
+    ), on_usage=on_usage)
     b = bible_raw["collection_bible"]
     bible = CollectionBible(
         collection_name=b["collection_name"],
@@ -755,7 +765,7 @@ def generate_collection(
             prior_summaries=_prior_summaries_text(raw_poster_items),
             printable_rules=_PRINTABLE_RULES,
         )
-        result = _generate_batch(client, prompt, "posters", batch_indexes)
+        result = _generate_batch(client, prompt, "posters", batch_indexes, on_usage=on_usage)
         batch_items = result.get("poster_items", [])
         _validate_batch(batch_items, batch_indexes, raw_poster_items, "posters")
         raw_poster_items.extend(batch_items)
@@ -782,7 +792,7 @@ def generate_collection(
         }, indent=2),
         collection_size=size,
         poster_summaries=json.dumps(poster_summaries, indent=2),
-    ))
+    ), on_usage=on_usage)
 
     # ── Assemble ───────────────────────────────────────────────────────────────
     posters = [

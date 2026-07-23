@@ -142,6 +142,7 @@ def review(
     optimized_prompt: str,
     optimized_negative_prompt: str,
     image_path: str,
+    on_usage=None,
 ) -> VisionReport:
     if not ANTHROPIC_API_KEY:
         raise ValueError("ANTHROPIC_API_KEY is not set in .env")
@@ -175,6 +176,14 @@ def review(
         }],
     )
 
+    if on_usage is not None:
+        on_usage({
+            "provider": "anthropic",
+            "model": MODEL,
+            "call_type": "text",
+            "input_tokens": message.usage.input_tokens,
+            "output_tokens": message.usage.output_tokens,
+        })
     raw = message.content[0].text.strip()
     if raw.startswith("```"):
         raw = raw.split("```")[1]

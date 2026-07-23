@@ -62,7 +62,7 @@ If any check fails, the output will tell you exactly what to fix.
 python3 -m pytest -q
 ```
 
-Expected: 45 tests passing (27 collection batching + 18 orchestrator).
+Expected: 117 tests passing.
 No API calls are made during unit tests.
 
 ## 7. Run a small integration test
