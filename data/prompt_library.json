@@ -1,0 +1,722 @@
+{
+  "global_style_block": "vertical fine art poster, Japanese-inspired vintage printmaking aesthetic, refined editorial composition, authentic handmade screen-print texture, subtle woodblock grain, slightly aged natural paper, limited harmonious color palette, elegant use of negative space, crisp controlled outlines, tasteful imperfections, museum-quality wall art, sophisticated contemporary interpretation, centered or intentionally asymmetrical composition, flat front-facing artwork, full bleed edge-to-edge composition, artwork and background fill all four corners, no frame, no wall, no room, no furniture, no mockup, no border outside the artwork, no paper margin, clean edges, high detail, print-ready",
+  "global_negative_prompt": "photorealistic, 3D render, glossy digital art, plastic texture, cheap clipart, generic stock illustration, childish cartoon, anime character, manga, busy composition, excessive detail, neon colors, oversaturated colors, smooth digital gradients, modern logo, readable English text, gibberish typography, fake Japanese writing, distorted anatomy, duplicate animals, extra limbs, malformed wings, malformed eyes, frame, wall, furniture, room interior, picture hanging hardware, glass reflection, mockup, product photography, watermark, signature, border outside artwork, blank corners, white corners, cream border, paper vignette, deckled edge, paper margin, uneven edges, torn paper edge, canvas border",
+  "print_constraint": "flat front-facing artwork, vertical composition, print-ready, museum quality, no frame, no wall, no room, no mockup, no furniture, clean edges, centered artwork only",
+  "collection_template": "A tiny {subject} moving calmly through an enormous {environment}, the subject occupying only a small portion of the composition, surrounded by dense rhythmic {pattern_type} lines, Japanese woodblock-inspired graphic design, dramatic contrast of scale, extensive controlled negative space, limited palette of {palette}, one small warm accent color, sophisticated whimsical mood, subtle hand-printed ink texture, slightly aged natural paper",
+  "presets": [
+    {
+      "id": 1,
+      "name": "MINIMALIST RED WAVE POSTER",
+      "prompt": "A minimalist Japanese modernist poster featuring a deep vermilion rectangular field in the lower center, crossed by rhythmic white curved wave lines flowing horizontally like topographic contours, large warm ivory negative space above, subtle aged paper texture, restrained Bauhaus-meets-Japanese print design, precise geometric composition, tiny understated seal placeholder near one corner, calm and premium gallery aesthetic"
+    },
+    {
+      "id": 2,
+      "name": "ELEGANT PINK FLAMINGO",
+      "prompt": "An elegant pink flamingo portrait in profile, long curved neck forming a graceful S shape, black-tipped beak, delicate layered feather strokes, dusty rose background, subtle Japanese ink and gouache influence, minimal composition with the bird occupying the lower two-thirds, refined vintage botanical poster mood, soft handmade paper grain"
+    },
+    {
+      "id": 3,
+      "name": "LILY OF THE VALLEY BOTANICAL",
+      "prompt": "A vintage Japanese botanical poster of lily of the valley, two broad elongated green leaves rising vertically, a delicate curved stem carrying small ivory bell-shaped flowers, textured muted forest-green background, simplified botanical forms, subtle block-print imperfections, quiet elegant composition, tiny vermilion artist seal placeholder in the lower corner"
+    },
+    {
+      "id": 4,
+      "name": "TIGER SWIMMING THROUGH GREEN WAVES",
+      "prompt": "A small orange Bengal tiger swimming calmly through an expansive dark green sea, only the tiger's head and striped back visible above the water, hundreds of thin flowing cream wave lines surrounding it, Japanese woodblock-inspired pattern design, dramatic use of scale and negative space, whimsical but sophisticated, deep emerald and muted orange palette"
+    },
+    {
+      "id": 5,
+      "name": "CHERRY BLOSSOM BRANCH WITH BIRDS",
+      "prompt": "A graceful Japanese sumi-e inspired painting of a curved cherry blossom branch extending diagonally across warm rice paper, clusters of pale pink blossoms, two small birds perched among the flowers, expressive black ink brushwork, controlled watercolor bleeding, abundant negative space, subtle vertical typography area left blank, antique scroll painting atmosphere"
+    },
+    {
+      "id": 6,
+      "name": "BLOSSOM BRANCH AND RED SUN",
+      "prompt": "A bold vertical Japanese ink poster showing a dark twisting plum blossom branch rising diagonally, vivid coral-red blossoms, a large flat vermilion sun disc behind the branch, cream handmade paper background, dynamic asymmetrical composition, expressive sumi ink splashes, retro Japanese graphic design"
+    },
+    {
+      "id": 7,
+      "name": "MISTY PAGODA LANDSCAPE",
+      "prompt": "A serene Japanese landscape poster with a traditional lakeside pagoda, misty layered mountains fading into pale blue-green distance, still water reflections, flowering cherry branches entering from the upper right, a single muted coral sun disc, delicate watercolor and woodblock fusion, atmospheric depth, soft aged paper, tranquil poetic composition"
+    },
+    {
+      "id": 8,
+      "name": "CRANES ON ANTIQUE GOLD",
+      "prompt": "Two elegant red-crowned cranes standing beneath dark pine branches, warm antique gold background with subtle metallic leaf texture, traditional Japanese screen-painting influence, detailed feathers balanced with simplified decorative foliage, black, ivory, muted red and gold palette, stately vertical composition"
+    },
+    {
+      "id": 9,
+      "name": "MINIMAL PINK CHERRY BRANCH",
+      "prompt": "A single dark brown cherry tree branch entering diagonally from the upper right, scattered white and pale blush blossoms, dusty pink textured background, minimalist Japanese botanical print, generous empty space, delicate paper fibers, restrained and calming wall art"
+    },
+    {
+      "id": 10,
+      "name": "RETRO RED SUN EDITORIAL POSTER",
+      "prompt": "A retro Japanese editorial poster with a large vermilion sun disc, a black flowering branch crossing diagonally, cream recycled paper texture, strong vertical graphic layout, distressed mid-century printmaking, reserved blank columns for later typography, bold asymmetry, black and red ink registration imperfections"
+    },
+    {
+      "id": 11,
+      "name": "LOTUS BOTANICAL FIELD",
+      "prompt": "A dense yet elegant Japanese lotus pond illustration, large round teal and sage leaves layered vertically, ivory and pale blush lotus blossoms, slender stems rising from the bottom, warm parchment background, traditional botanical woodblock aesthetic, subtle faded pigments, balanced decorative composition"
+    },
+    {
+      "id": 12,
+      "name": "JAPANESE GARDEN PATH",
+      "prompt": "A romantic Japanese garden path winding through ancient pine trees, distant mist-covered mountains, small stone steps and mossy ground, muted olive, ochre and charcoal palette, antique Japanese landscape print, fine engraved textures, faded parchment, deep atmospheric perspective"
+    },
+    {
+      "id": 13,
+      "name": "ANCIENT BLOSSOM TREE",
+      "prompt": "An ancient gnarled plum tree with pale ivory blossoms, twisting dark branches, sparse elegant composition on warm beige paper, traditional Japanese ink wash and mineral pigment style, subtle gold-gray moonlit atmosphere, fine handmade print texture, contemplative and timeless"
+    },
+    {
+      "id": 14,
+      "name": "SOLITARY CRANE AND GOLDEN MOON",
+      "prompt": "A solitary red-crowned crane standing in profile beside a large muted golden full moon positioned in the upper sky, sparse bare branches crossing behind the crane at mid-height, smoky gray-blue background, Japanese woodblock and screen-painting fusion, quiet dramatic lighting, elegant negative space, restrained antique palette"
+    },
+    {
+      "id": 15,
+      "name": "KOI AND CONCENTRIC RIPPLES",
+      "prompt": "A single vivid orange koi fish swimming through an abstract deep green pond, concentric cream ripple rings radiating outward from around the fish, dense flowing line pattern filling the background, Japanese graphic woodcut aesthetic, strong contrast, minimalist subject with intricate patterned water"
+    },
+    {
+      "id": 16,
+      "name": "TINY BOAT IN VAST SEA",
+      "prompt": "A tiny solitary orange boat drifting across an enormous dark teal sea, the boat floating on the water surface, layered hand-drawn white wave lines covering the entire composition, Japanese woodblock-inspired ocean pattern, dramatic scale, quiet loneliness, minimal subject, faded cream paper edge texture"
+    },
+    {
+      "id": 17,
+      "name": "CRANE, TOPIARY AND TURTLE",
+      "prompt": "A whimsical Japanese folk-art composition featuring a red-crowned crane perched on top of a rounded sculpted topiary, a tiny turtle walking along the ground directly below, warm cream paper background, simplified flat shapes, muted green and vermilion accents, playful negative space, vintage children's woodblock print refined for adult interiors"
+    },
+    {
+      "id": 18,
+      "name": "MONUMENTAL JAPANESE PINE",
+      "prompt": "A monumental Japanese pine tree with layered cloud-like foliage, cropped dramatically so the branches dominate the vertical poster, muted jade-green needles, pale cream sky, subtle distant landscape at the base, vintage woodblock texture, calm architectural composition, tiny red seal placeholder"
+    },
+    {
+      "id": 19,
+      "name": "MINIMAL YELLOW SUN AND BRANCH",
+      "prompt": "A minimalist Japanese wall art composition with a large muted mustard-yellow sun disc in the upper portion, a slender branch carrying tiny pale yellow blossoms rising from the lower right, warm ivory background, delicate ink lines, soft watercolor stains, understated wabi-sabi elegance, abundant empty space"
+    },
+    {
+      "id": 20,
+      "name": "BLACK CAT UNDER CHERRY TREE",
+      "prompt": "A small black cat sitting in profile beneath a sweeping cherry blossom tree, pale parchment background, soft muted pink blossoms drifting through the air, expressive Japanese ink-brush tree branches arching above, quiet narrative atmosphere, vintage woodblock paper grain, elegant vertical composition"
+    },
+    {
+      "id": 21,
+      "name": "LOTUS AND KOI POND",
+      "prompt": "A tranquil Japanese pond poster featuring layered lotus leaves and pale pink lotus blossoms above the waterline, several small orange koi visible swimming beneath the water surface, soft sage, teal and coral palette, watercolor washes combined with traditional woodblock linework, dreamy antique paper texture, refined botanical composition"
+    },
+    {
+      "id": 22,
+      "name": "RETRO JAPAN MAP TRAVEL POSTER",
+      "prompt": "A vintage 1950s Japanese travel poster centered on a stylized map silhouette of Japan, muted rose and warm cream palette, tiny illustrated landmarks and mountains arranged within the map shape, mid-century screen-print texture, retro tourism ephemera, reserved clean area for later typography, faded ink and aged paper"
+    },
+    {
+      "id": 23,
+      "name": "MINIMAL INK-WASH WATERFALL",
+      "prompt": "A minimalist Japanese ink-wash waterfall descending from an abstract rocky cliff, pale turquoise and smoky blue ink bleeding into white paper, one tiny dark boat positioned at the base of the waterfall on the water below, expressive brush splashes, large areas of untouched ivory paper, contemporary sumi-e gallery poster"
+    },
+    {
+      "id": 24,
+      "name": "FLYING CRANE FLOCK",
+      "prompt": "A group of five red-crowned cranes flying diagonally across a deep desaturated teal sky, wings captured in varied elegant positions, subtle gold cloud motifs behind the flock, Japanese screen-print aesthetic, muted ivory, charcoal and red palette, rhythmic composition, vintage paper grain"
+    },
+    {
+      "id": 25,
+      "name": "CAT SLEEPING UNDER WILLOW",
+      "prompt": "A small cream and orange cat sleeping on the ground beneath long cascading willow branches, dense vertical green leaves forming a curtain around the resting animal, warm parchment background, Japanese folk woodblock style, delicate line texture, peaceful intimate composition, tiny vermilion seal placeholder"
+    },
+    {
+      "id": 26,
+      "name": "AUTUMN MAPLE AND MOON",
+      "prompt": "A bold Japanese autumn poster with a branching maple tree covered in coral-red leaves, a single pale full moon visible behind the upper canopy, deep turquoise background, flat layered woodblock shapes, cream outlines, vintage ukiyo-e inspired print texture, striking seasonal color contrast"
+    },
+    {
+      "id": 27,
+      "name": "RETRO LUCKY CAT",
+      "prompt": "A stylized lucky cat seated front-facing, wearing an ornate dark teal and vermilion robe, surrounded by simplified ocean waves and rising sun motifs, Japanese folk-art poster, symmetrical decorative composition, muted cream paper, vintage screen-print texture, playful yet premium, not kawaii or anime, adult interior aesthetic"
+    },
+    {
+      "id": 28,
+      "name": "JAPANESE-WESTERN BISON LANDSCAPE",
+      "prompt": "A solitary dark bison walking across a surreal rust-red prairie beneath layered jade and cream clouds, Japanese woodblock composition applied to an American western subject, vintage travel-poster mood, limited palette, distressed paper texture, quiet cinematic landscape"
+    },
+    {
+      "id": 29,
+      "name": "TWO WHITE CRANES ON GOLD",
+      "prompt": "Two white cranes flying upward across a richly textured antique gold field, outstretched wings with fine feather detailing, subtle cloud and mineral pigment patterns, Japanese folding-screen aesthetic, minimal red crown accents, elegant ceremonial composition"
+    },
+    {
+      "id": 30,
+      "name": "RETRO JAPANESE STREET",
+      "prompt": "A quiet retro Japanese neighborhood street on a clear summer afternoon, narrow road flanked by low storefronts, utility poles and overhead cables visible, saturated blue sky above, warm sunlight, simplified screen-printed shapes, 1980s travel-poster nostalgia, no people, subtle paper grain, calm cinematic perspective"
+    },
+    {
+      "id": 31,
+      "name": "GEOMETRIC FOLK OWL",
+      "prompt": "A front-facing owl constructed from simplified geometric woodcut shapes, large round cream eyes, muted black, olive and warm tan feathers, rough linen-paper texture, Japanese folk-art and mid-century Scandinavian poster fusion, centered iconic composition"
+    },
+    {
+      "id": 32,
+      "name": "FROG WITH UMBRELLA",
+      "prompt": "A small green frog standing upright and holding a muted burgundy paper umbrella by its handle at its side at waist height, the umbrella canopy extending upward and to one side away from the frog's head so the frog's head and eyes remain clearly visible above, delicate vertical rain lines in the background, warm aged parchment background, Japanese folk woodblock print, whimsical understated humor, simple flat shapes, refined negative space, tiny red artist seal placeholder"
+    },
+    {
+      "id": 33,
+      "name": "BLUE LOTUS FIELD AND TINY KOI",
+      "prompt": "A dense field of tall blue-green lotus stems and rounded leaves, a single tiny orange koi visible through the lower water beneath the stems, muted teal monochrome with a single warm accent, Japanese textile-pattern influence, fine vertical rain-like linework, calm decorative rhythm"
+    },
+    {
+      "id": 34,
+      "name": "PINE TREE ABOVE MISTY MOUNTAINS",
+      "prompt": "A towering windswept pine tree growing from a mountain ridge in the foreground, layered pale blue mountains receding into mist below and behind, muted cream sky above, Japanese shin-hanga woodblock influence, crisp carved line texture, deep teal foliage, elegant asymmetrical vertical landscape"
+    },
+    {
+      "id": 35,
+      "name": "ORNAMENTAL JAPANESE CLOUDS",
+      "prompt": "An ornamental Japanese cloud study, layered curling clouds rendered in pale blue, gray, cream and soft gold, intricate hand-carved linework, no central subject, all-over decorative pattern with natural movement, antique woodblock textile aesthetic, calming premium wall art"
+    },
+    {
+      "id": 36,
+      "name": "RETRO VINYL RECORD STORE",
+      "prompt": "A cozy vintage record store viewed from the entrance, shelves filled with vinyl records lining the walls, warm afternoon sunlight casting long geometric shadows across the wooden floor, dark teal, burnt orange and cream palette, Japanese retro editorial illustration, crisp screen-print linework, cinematic but flattened perspective"
+    },
+    {
+      "id": 37,
+      "name": "VINTAGE TURNTABLE ADVERTISEMENT",
+      "prompt": "A vintage turntable viewed from above at a slight angle, large black vinyl record with a bright vermilion label, bold distressed Japanese advertising layout, oversized abstract typography areas left blank, cream paper, black and red limited palette, 1960s screen-print texture"
+    },
+    {
+      "id": 38,
+      "name": "DANCING COUPLE ON VINYL RECORD",
+      "prompt": "A playful mid-century illustration of exactly two elegantly dressed figures dancing on top of a giant orange vinyl record, cream background, sparse black linework, muted orange and pale teal accents, Japanese editorial poster influence, witty surreal scale, clean negative space"
+    },
+    {
+      "id": 39,
+      "name": "AVANT-GARDE JAPANESE MAGAZINE COVER",
+      "prompt": "A 1930s Japanese avant-garde magazine-cover composition, large deep cobalt semicircle at the bottom, small vermilion circle floating above geometric beige shapes in the upper half, warm aged ivory paper, minimalist constructivist balance, subtle letterpress texture, no readable text"
+    },
+    {
+      "id": 40,
+      "name": "COLORFUL BOTANICAL POSTER",
+      "prompt": "A joyful vertical botanical poster with stylized flowers in coral, mustard, turquoise, black and warm pink, tall stems arranged rhythmically, Japanese folk-print and mid-century textile fusion, flat graphic petals, cream paper background, playful but controlled composition"
+    },
+    {
+      "id": 41,
+      "name": "BLACK BULL ON RED FIELD",
+      "prompt": "A single small powerful black bull silhouette charging across a vast textured vermilion-red field, minimal Japanese woodcut poster, tiny subject positioned low and off-center, subtle paper fibers and distressed ink, dramatic negative space, bold contemporary wall art"
+    },
+    {
+      "id": 42,
+      "name": "GINKGO BOTANICAL POSTER",
+      "prompt": "A vertical botanical study of cascading golden ginkgo leaves on thin dark branches, pale warm parchment background, Japanese natural-history print influence, delicate engraved veins on each leaf, muted mustard and olive palette, elegant asymmetry, subtle red seal placeholder"
+    },
+    {
+      "id": 43,
+      "name": "DUCK WINE PARTY",
+      "prompt": "Exactly two anthropomorphic ducks wearing patterned blue dinner jackets, seated at a small round table facing each other sharing wine and Japanese dishes, dusty pink background, flat vintage editorial illustration, mid-century Japanese advertising style, playful sophisticated humor, teal, coral and cream palette, clean screen-print texture"
+    },
+    {
+      "id": 44,
+      "name": "OVERSIZED VINYL GRAPHIC POSTER",
+      "prompt": "A bold vertical Japanese retro music poster featuring an oversized black vinyl record entering from the lower right, cream and muted olive background, small vermilion label at the record center, modular geometric graphic design, distressed letterpress texture, reserved areas for later typography"
+    },
+    {
+      "id": 45,
+      "name": "THREE SHOREBIRDS NATURAL-HISTORY POSTER",
+      "prompt": "Exactly three stylized shorebirds standing closely together, each with distinct muted blue-gray and rust markings, warm parchment background, Japanese natural-history woodblock style, simplified geometric feathers, elegant grouped composition"
+    },
+    {
+      "id": 46,
+      "name": "TWO KOI NATURAL-HISTORY POSTER",
+      "prompt": "Exactly two koi fish swimming vertically in opposite directions, one coral red and one charcoal black, soft cream water background, minimal ripple lines, Japanese ink and woodblock fusion, clean balanced negative space"
+    },
+    {
+      "id": 47,
+      "name": "DECORATIVE LOBSTER PAIR",
+      "prompt": "Exactly two decorative lobsters arranged vertically, one coral red and one deep cobalt blue, intricate segmented shells rendered with hand-printed linework, warm cream background, Japanese natural-history poster fused with playful modern graphic design"
+    },
+    {
+      "id": 48,
+      "name": "PUFFERFISH COLLECTION",
+      "prompt": "A collection of stylized pufferfish in varied sizes and patterns, mustard, teal, coral, black and cream palette, arranged like a vintage Japanese zoological plate, playful dotted and striped textures, flat screen-print forms, subtle antique paper"
+    }
+  ],
+  "collections": [
+    {
+      "id": 1,
+      "name": "Tiny Animal • Vast Pattern",
+      "rating": 5,
+      "primary": true,
+      "description": "Küçük bir konu, dev desenler ve negatif alan.",
+      "template": "{subject}, the subject a small silhouette occupying no more than 10–15% of the canvas, surrounded by an enormous rhythmic hand-carved line pattern filling the remaining field, bold Japanese woodblock silhouette carving with crisp flat color areas, dramatic contrast of scale between tiny subject and vast patterned environment, strong color contrast — warm accent subject against cool patterned background, warm cream aged washi paper ground, extensive breathing negative space framing the subject",
+      "items": [
+        "Tiny orange tiger swimming through giant emerald waves",
+        "Tiny red fox crossing endless patterned grass",
+        "Tiny black cat sleeping beneath enormous willow branches",
+        "Tiny rabbit inside oversized flowers",
+        "Tiny turtle crossing giant sand dunes",
+        "Tiny whale inside abstract ocean currents",
+        "Tiny boat drifting across endless patterned sea",
+        "Tiny koi swimming inside giant ripple circles",
+        "Tiny owl surrounded by decorative leaves",
+        "Tiny elephant crossing minimalist desert",
+        "Tiny polar bear inside abstract snow patterns",
+        "Tiny capybara floating in lotus pond",
+        "Tiny red panda carrying a lantern",
+        "Tiny frog holding an umbrella in the rain",
+        "Tiny otter swimming through decorative waves",
+        "Tiny fox beneath giant maple tree",
+        "Tiny bird inside enormous cloud patterns",
+        "Tiny deer inside bamboo forest",
+        "Tiny crane inside golden mist",
+        "Tiny squirrel climbing giant ginkgo leaves"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Quiet Japanese Animals",
+      "rating": 5,
+      "description": "Sakin, Zen hissi veren hayvan posterleri.",
+      "template": "{subject}, Japanese woodblock print, quiet zen atmosphere, simplified flat ink shapes with delicate dry-brush linework, muted natural palette — charcoal, warm cream, and one or two restrained accent tones, warm aged parchment ground, generous negative space surrounding the single subject, lower-third or centered composition, contemplative wabi-sabi mood",
+      "items": [
+        "Sleeping cat beneath willow tree",
+        "Red fox resting in tall grass",
+        "Brown bear fishing by a stream",
+        "Elegant red-crowned crane",
+        "White rabbit among blossoms",
+        "River otter",
+        "Vintage owl portrait",
+        "Frog with umbrella",
+        "Capybara in lotus pond",
+        "Red panda with lantern",
+        "Two ducks drinking tea",
+        "Crow on pine branch",
+        "Sparrow on cherry blossom",
+        "Turtle on river stones",
+        "Koi swimming peacefully",
+        "Swan beneath the moon",
+        "Heron in shallow water",
+        "Kingfisher above a stream",
+        "Japanese macaque",
+        "Sleeping raccoon dog (Tanuki)"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Botanical Heritage",
+      "rating": 5,
+      "description": "Japon botanik sanat koleksiyonu.",
+      "template": "Japanese botanical study of {subject}, natural history woodblock print, delicate hand-carved linework, aged parchment, muted natural palette, refined botanical composition",
+      "items": [
+        "Cherry Blossom",
+        "Lotus",
+        "Lily of the Valley",
+        "Ginkgo",
+        "Bamboo",
+        "Pine Tree",
+        "Plum Blossom",
+        "Japanese Maple",
+        "Iris",
+        "Camellia",
+        "Hydrangea",
+        "Peony",
+        "Magnolia",
+        "Wild Grass",
+        "Willow",
+        "Chrysanthemum",
+        "Wisteria",
+        "Sakura Forest",
+        "Moss Garden",
+        "Bonsai"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Crane & Gold",
+      "rating": 5,
+      "description": "Altın zeminli premium koleksiyon.",
+      "template": "{subject}, Japanese folding-screen painting aesthetic, richly textured antique gold background with subtle mineral pigment shimmer, elegant vertical ceremonial composition with generous gold space, refined feather and pine needle detail balanced with simplified decorative foliage, limited palette of black, white, muted vermilion and ivory on antique gold, stately and serene mood, fine mineral-pigment and ink technique",
+      "items": [
+        "Two cranes beneath pine branches",
+        "Crane with golden moon",
+        "Flying cranes",
+        "Crane on rocky cliff",
+        "Crane beside lotus pond",
+        "Crane in snowfall",
+        "Crane among bamboo",
+        "Crane with rising sun",
+        "Crane beside waterfall",
+        "Crane in mist",
+        "Golden crane silhouette",
+        "Pair of cranes",
+        "Crane beneath maple",
+        "Crane in clouds",
+        "Crane at dawn"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Retro Editorial Japan",
+      "rating": 5,
+      "description": "1950–70 Japon afişleri.",
+      "template": "{subject}, vintage Japanese editorial poster, mid-century screen-print aesthetic, 1960s graphic design, distressed letterpress texture, cream aged paper, bold asymmetric layout",
+      "items": [
+        "Vintage travel poster",
+        "Japanese magazine cover",
+        "Vinyl record poster",
+        "Record store interior",
+        "Jazz poster",
+        "Coffee poster",
+        "Bookstore poster",
+        "Tokyo street",
+        "Kyoto alley",
+        "Tea house",
+        "Cinema poster",
+        "Metro poster",
+        "Mountain railway",
+        "Harbor poster",
+        "Japanese café"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Japanese Style Around the World",
+      "rating": 5,
+      "description": "Dünyayı Japon woodblock tarzında yorumlamak.",
+      "template": "{subject} interpreted through Japanese woodblock print style, vintage travel poster aesthetic, limited palette, distressed paper texture, quiet cinematic landscape composition",
+      "items": [
+        "Japanese Cappadocia",
+        "Japanese Istanbul",
+        "Japanese Paris",
+        "Japanese Venice",
+        "Japanese Santorini",
+        "Japanese London",
+        "Japanese New York",
+        "Japanese Patagonia",
+        "Japanese Sahara",
+        "Japanese Alps",
+        "Japanese Amsterdam",
+        "Japanese Rome",
+        "Japanese Prague",
+        "Japanese Kyoto-style Norway",
+        "Japanese Iceland"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Japanese Landscapes",
+      "rating": 4,
+      "description": "Klasik Japon manzara posterleri.",
+      "template": "Japanese landscape featuring {subject}, shin-hanga woodblock style, atmospheric depth, layered misty mountains, aged paper, restrained natural palette",
+      "items": [
+        "Misty mountains",
+        "Waterfall",
+        "Forest path",
+        "Ancient pine",
+        "Pagoda beside lake",
+        "River valley",
+        "Mountain temple",
+        "Snow landscape",
+        "Bamboo forest",
+        "Autumn valley",
+        "Sunrise over hills",
+        "Moonlit lake",
+        "Hidden shrine",
+        "Stone bridge",
+        "Coastal cliffs"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Waves & Ocean",
+      "rating": 5,
+      "description": "Japon dalgaları ve okyanus desenleri.",
+      "template": "{subject}, Japanese woodblock ocean pattern, Hokusai-inspired wave design, dramatic flowing line pattern, deep teal and cream palette, graphic woodcut aesthetic",
+      "items": [
+        "Emerald waves",
+        "Indigo waves",
+        "Circular ripples",
+        "Giant ocean currents",
+        "Minimal sea",
+        "Storm waves",
+        "Calm lake",
+        "Floating boat",
+        "Koi pond",
+        "Whale ocean",
+        "Sea turtle",
+        "Coral reef",
+        "Abstract tide",
+        "Foam patterns",
+        "Deep ocean"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Japanese Folk Animals",
+      "rating": 4,
+      "description": "Geleneksel Japon halk sanatı hayvanları.",
+      "template": "{subject}, Japanese folk art woodblock print, traditional symbolic animal illustration, muted natural palette, aged paper, simple flat shapes",
+      "items": [
+        "Lucky cat",
+        "Tanuki",
+        "Fox spirit",
+        "Frog",
+        "Crane",
+        "Owl",
+        "Koi",
+        "Turtle",
+        "Rabbit",
+        "Sparrow",
+        "Red panda",
+        "Capybara",
+        "Otter",
+        "Bear",
+        "Deer"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Whimsical Animal Posters",
+      "rating": 5,
+      "description": "Etsy'de çok satabilecek eğlenceli seri.",
+      "template": "{subject}, Japanese folk woodblock print fused with mid-century editorial illustration, whimsical understated humor with expressive character detail, simple bold flat shapes with clean screen-print outlines, limited palette of teal, coral and warm cream on dusty parchment background, generous negative space around the scene, playful yet premium adult poster aesthetic, no kawaii or anime styling",
+      "items": [
+        "Ducks drinking wine",
+        "Fox carrying lantern",
+        "Frog with umbrella",
+        "Cat reading book",
+        "Bear drinking tea",
+        "Rabbit painting",
+        "Owl librarian",
+        "Crane chef",
+        "Raccoon fisherman",
+        "Mouse baker",
+        "Squirrel gardener",
+        "Fox café owner",
+        "Otter musician",
+        "Cat sleeping in flowers",
+        "Panda florist"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Japanese Natural History",
+      "rating": 4,
+      "description": "Doğa tarihi illüstrasyon koleksiyonu.",
+      "template": "{subject}, Japanese natural history woodblock plate, botanical and zoological illustration style, warm parchment background, fine engraved linework, muted scientific palette",
+      "items": [
+        "Shorebirds",
+        "Koi collection",
+        "Lobsters",
+        "Pufferfish",
+        "Butterflies",
+        "Dragonflies",
+        "Beetles",
+        "Cranes",
+        "Owls",
+        "Turtles",
+        "Frogs",
+        "Wildflowers",
+        "Mushrooms",
+        "Sea shells",
+        "Ferns"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Geometric Minimalism",
+      "rating": 5,
+      "description": "Japon minimalizmi ve geometrik kompozisyonlar.",
+      "template": "{subject}, Japanese geometric minimalism fused with Bauhaus graphic design, bold flat shapes with razor-precise edges, limited palette of vermilion, ivory and charcoal — flat color areas only, no gradients, maximum controlled negative space, letterpress and screen-print registration texture on warm cream paper with subtle grain, strong asymmetric or centered editorial composition",
+      "items": [
+        "Vermilion sun",
+        "Indigo circle",
+        "Abstract waves",
+        "Minimal mountains",
+        "Balanced geometry",
+        "Editorial blocks",
+        "Bauhaus + Japanese",
+        "Negative space poster",
+        "Constructivist Japan",
+        "Minimal botanical",
+        "Circle & branch",
+        "Line composition",
+        "Gold geometry",
+        "Organic abstraction",
+        "Textile-inspired forms"
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Vintage Music Collection",
+      "rating": 4,
+      "description": "Retro müzik posterleri Japon tarzında.",
+      "template": "{subject}, vintage Japanese music poster, mid-century screen-print aesthetic, distressed letterpress texture, black and red limited palette, 1960s editorial design",
+      "items": [
+        "Vinyl record",
+        "Record store",
+        "Turntable",
+        "Jazz café",
+        "Concert poster",
+        "Cassette poster",
+        "Piano illustration",
+        "Saxophone poster",
+        "Dancing couple",
+        "Music magazine",
+        "Radio poster",
+        "Headphones",
+        "Guitar",
+        "Orchestra",
+        "Retro speaker"
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Japanese Seasons",
+      "rating": 5,
+      "description": "Dört mevsim Japon woodblock koleksiyonu.",
+      "template": "{subject}, Japanese seasonal woodblock print, traditional ukiyo-e aesthetic, seasonal color palette, aged paper, poetic atmospheric composition",
+      "items": [
+        "Spring Sakura",
+        "Summer Lotus",
+        "Autumn Maple",
+        "Winter Snow",
+        "Plum Blossom",
+        "Rainy Season",
+        "Golden Ginkgo",
+        "Harvest Moon",
+        "Misty Morning",
+        "Cherry Petals",
+        "Snowy Pines",
+        "Green Bamboo",
+        "Flower Festival",
+        "Fireflies",
+        "Moon Viewing"
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Botanical Minimalism",
+      "rating": 4,
+      "description": "Tek bitki, maksimum negatif alan.",
+      "template": "Minimalist Japanese botanical study of a single {subject}, extreme negative space, wabi-sabi aesthetic, delicate ink linework, warm parchment background, one refined focal subject, restrained and calming",
+      "items": [
+        "Single lotus",
+        "Single bamboo",
+        "Single pine",
+        "Single iris",
+        "Single camellia",
+        "Single blossom branch",
+        "Single ginkgo leaf",
+        "Single fern",
+        "Single maple branch",
+        "Single reed",
+        "Single wildflower",
+        "Single willow branch",
+        "Single orchid",
+        "Single lily",
+        "Single magnolia"
+      ]
+    }
+  ],
+  "parameter_presets": {
+    "palettes": [
+      "Emerald + Cream + Burnt Orange",
+      "Vermilion + Ivory + Charcoal",
+      "Dusty Rose + Cream + Olive",
+      "Indigo + Beige + Gold",
+      "Sage Green + Ivory + Coral",
+      "Deep Teal + Warm White + Rust",
+      "Forest Green + Mustard + Black",
+      "Muted Aqua + Stone + Crimson",
+      "Warm Parchment + Dark Brown + Moss",
+      "Antique Gold + Black + Ivory",
+      "Dusty Blue + Cream + Terracotta",
+      "Olive + Burgundy + Beige",
+      "Soft Pink + Warm White + Chocolate",
+      "Sea Green + Orange Accent",
+      "Monochrome Ink Wash"
+    ],
+    "backgrounds": [
+      "Warm handmade paper",
+      "Vintage rice paper",
+      "Aged parchment",
+      "Traditional washi paper",
+      "Faded botanical paper",
+      "Subtle linen texture",
+      "Distressed museum paper",
+      "Antique scroll texture",
+      "Soft watercolor wash",
+      "Muted paper fibers",
+      "Natural cotton paper",
+      "Fine screen-print texture"
+    ],
+    "compositions": [
+      "Huge negative space",
+      "Centered subject",
+      "Lower-third composition",
+      "Upper-left composition",
+      "Diagonal composition",
+      "Minimal asymmetry",
+      "Tiny subject inside huge environment",
+      "Large circular composition",
+      "Strong vertical movement",
+      "Horizontal wave rhythm",
+      "Floating isolated object",
+      "Symmetrical layout",
+      "Golden ratio placement",
+      "Editorial poster balance",
+      "Traditional hanging scroll composition"
+    ],
+    "paper_aging": [
+      "Brand new museum paper",
+      "Slight aging",
+      "Natural fiber texture",
+      "Vintage museum archive",
+      "Soft foxing marks",
+      "Subtle faded edges",
+      "Gentle discoloration",
+      "Handmade imperfections"
+    ],
+    "print_textures": [
+      "subtle screen print",
+      "carved woodblock",
+      "dry-brush ink",
+      "faded lithograph",
+      "letterpress",
+      "rice-paper watercolor",
+      "folding-screen mineral pigment"
+    ],
+    "moods": [
+      "Peaceful",
+      "Meditative",
+      "Elegant",
+      "Quiet",
+      "Timeless",
+      "Minimal",
+      "Sophisticated",
+      "Whimsical",
+      "Playful",
+      "Poetic",
+      "Dreamlike",
+      "Vintage",
+      "Zen",
+      "Contemplative",
+      "Gallery quality"
+    ],
+    "eras": [
+      "1930s Japanese travel poster",
+      "1950s editorial poster",
+      "1960s screen print",
+      "Traditional ukiyo-e inspired",
+      "Shin-hanga inspired",
+      "Mid-century modern Japanese",
+      "Contemporary Japanese gallery print",
+      "Minimal Scandinavian + Japanese fusion"
+    ]
+  }
+}

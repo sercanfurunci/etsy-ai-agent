@@ -26,7 +26,18 @@ NEGATIVE_PROMPT = (
     "deckled edge, canvas edge, poster frame, picture frame, wall, room, mockup, watermark, "
     "signature, text, UI elements, photorealism, 3D render, modern clothing, modern buildings, "
     "typography, logos, glossy digital painting, anime aesthetics, malformed anatomy, "
-    "duplicated animals, excessive gradients, plastic texture, western oil painting style"
+    "duplicated animals, excessive gradients, plastic texture, western oil painting style, "
+    "cartoon, cartoon style, vector art, clipart, cel shading, flat digital illustration, "
+    "comic book style, children's illustration, neon colors, oversaturated, "
+    "white corners, blank corners, paper border, paper margin, cream border, vignette border, deckled paper edge"
+)
+
+QUALITY_PREFIX = (
+    "Fine art Japanese woodblock print, vintage ukiyo-e masterwork, museum quality, "
+    "intricate hand-carved linework with rich atmospheric depth, "
+    "bold color areas with crisp carved outlines, authentic woodblock ink grain and subtle color gradation, "
+    "full bleed composition filling every corner edge to edge, no paper border, no white margins, "
+    "collectible wall art print. "
 )
 
 DRAMATIC_MOODS = {"dramatic", "powerful", "fierce", "stormy", "triumphant", "defiant"}
@@ -478,7 +489,7 @@ def generate_one(dataset: dict, history: dict, window: int, title_window: int, r
         title_window, window,
     )
 
-    image_prompt = _assemble_prompt({
+    image_prompt = QUALITY_PREFIX + _assemble_prompt({
         "subject": subject["promptText"],
         "environment": environment["promptText"],
         "season": season["promptText"],

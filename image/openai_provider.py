@@ -1,5 +1,6 @@
 import base64
 import os
+import warnings
 from pathlib import Path
 from openai import OpenAI
 from agent.config import OPENAI_API_KEY
@@ -15,7 +16,13 @@ class OpenAIImageProvider(ImageProvider):
             raise ValueError("OPENAI_API_KEY is not set in .env")
         self._client = OpenAI(api_key=OPENAI_API_KEY)
 
-    def generate(self, prompt: str, on_usage=None) -> str:
+    def generate(self, prompt: str, negative_prompt: str = "", on_usage=None) -> str:
+        if negative_prompt:
+            warnings.warn(
+                "OpenAIImageProvider: negative_prompt is not supported by gpt-image-2. "
+                "The negative prompt has been ignored.",
+                stacklevel=2,
+            )
         OUTPUT_DIR.mkdir(exist_ok=True)
 
         response = self._client.images.generate(

@@ -4,6 +4,7 @@ import ssl
 import time
 import urllib.error
 import urllib.request
+import warnings
 from pathlib import Path
 
 # ponytail: macOS ships without root certs for Python; bypass for known BFL endpoints
@@ -19,8 +20,10 @@ from image.base import ImageProvider
 
 OUTPUT_DIR = Path("output")
 DEFAULT_MODEL = "flux-2-pro-preview"
-DEFAULT_WIDTH = 1024
-DEFAULT_HEIGHT = 1536
+DEFAULT_WIDTH = 1440
+DEFAULT_HEIGHT = 2160
+DEFAULT_STEPS = 28
+DEFAULT_GUIDANCE = 4.0
 POLL_INTERVAL = 0.5
 TIMEOUT = 300
 
@@ -33,6 +36,8 @@ class BFLImageProvider(ImageProvider):
         self._model = os.getenv("BFL_MODEL", DEFAULT_MODEL)
         self._width = int(os.getenv("BFL_WIDTH", DEFAULT_WIDTH))
         self._height = int(os.getenv("BFL_HEIGHT", DEFAULT_HEIGHT))
+        self._steps = int(os.getenv("BFL_STEPS", DEFAULT_STEPS))
+        self._guidance = float(os.getenv("BFL_GUIDANCE", DEFAULT_GUIDANCE))
         self._base_url = "https://api.bfl.ai"
 
     def _headers(self) -> dict:
@@ -66,7 +71,14 @@ class BFLImageProvider(ImageProvider):
         with urllib.request.urlopen(url, timeout=60, context=_SSL_CTX) as r:
             return r.read()
 
-    def generate(self, prompt: str, on_usage=None) -> str:
+    def generate(self, prompt: str, negative_prompt: str = "", on_usage=None) -> str:
+        if negative_prompt:
+            warnings.warn(
+                "BFLImageProvider: negative_prompt is not supported by the BFL API "
+                "(confirmed via OpenAPI schema). The negative prompt has been ignored. "
+                "Encode exclusions directly in the positive prompt instead.",
+                stacklevel=2,
+            )
         OUTPUT_DIR.mkdir(exist_ok=True)
 
         endpoint = f"{self._base_url}/v1/{self._model}"
@@ -74,6 +86,9 @@ class BFLImageProvider(ImageProvider):
             "prompt": prompt,
             "width": self._width,
             "height": self._height,
+            "steps": self._steps,
+            "guidance": self._guidance,
+            "output_format": "png",
         })
 
         polling_url = resp.get("polling_url")
@@ -96,8 +111,10 @@ class BFLImageProvider(ImageProvider):
 
         image_bytes = self._download(image_url)
 
-        slug = "".join(c if c.isalnum() else "_" for c in prompt[:40]).strip("_")
-        file_path = OUTPUT_DIR / f"{slug}.png"
+        # ponytail: skip prefix for slug so custom and ukiyo-e prompts don't collide on filename
+        slug_source = prompt.split(". ", 1)[-1] if ". " in prompt[:200] else prompt
+        slug = "".join(c if c.isalnum() else "_" for c in slug_source[:40]).strip("_")
+        file_path = OUTPUT_DIR / f"{slug}_{int(time.time())}.png"
         tmp_path = file_path.with_suffix(".tmp")
         tmp_path.write_bytes(image_bytes)
         os.replace(tmp_path, file_path)
