@@ -8,7 +8,19 @@ _NEGATIVE_ADDITIONS = (
     "paper edge, torn paper, deckled edge, deckled border, "
     "blank corners, blank margins, uneven margins, "
     "canvas edge, frame, poster frame, picture frame, "
-    "paper texture background, cream paper, watercolor paper surface, textured paper"
+    "paper texture background, cream paper, watercolor paper surface, textured paper, "
+    "watermark, getty watermark, shutterstock watermark, faint text overlay, copyright text, "
+    "colour banding, posterization, stepped gradient, hard gradient band, "
+    "volumetric shading, sphere shading, 3D gradient, western chiaroscuro, photorealistic skin tone gradient, "
+    "photorealistic spray, volumetric foam, photorealistic snowflake crystal, "
+    "bilateral symmetry, dead-centre composition, "
+    "floating post, unsupported floor, floating architectural element, "
+    "duplicate pillar, duplicate moon, duplicate sun, two suns, two moons, "
+    "right-over-left kimono collar, "
+    "spotlight cone, theatrical light beam, "
+    "neon saturation, electric colour, oversaturated accent, "
+    "bat silhouette, scattered random marks, dot cloud flock, "
+    "fish lying on water surface, fish resting on water"
 )
 
 OPTIMIZER_PROMPT = """\
@@ -63,6 +75,30 @@ Optimisation goals:
   • Held lantern grip: if a figure carries a lantern, it must be explicitly attached to their hand — "held in the right hand, arm hanging at the figure's side, lantern at knee height" or "gripped by the handle at waist level". Never allow a lantern to float near a figure without contact. The lantern cord or handle must connect visibly to the hand or a carried pole.
   • Scene environment coherence: a single composition must belong to ONE environment type. Ocean waves, rice paddies, riverside docks, mountain forests, and city streets are distinct environments — they cannot coexist in the same scene. If the prompt mixes incompatible environments, reduce to the single most dominant one and remove all elements that belong to a different environment type.
   • Reflection vs shadow distinction: in rainy scenes or near reflective water, reflections appear directly below the subject, vertically mirrored — they are NOT cast diagonally like shadows. If a reflection is described or implied (rain puddles, river, wet ground), add "reflection directly below, vertically mirrored" to anchor the correct rendering. Never describe a reflection as if it were a cast shadow, and never describe a cast shadow as if it were a reflection.
+
+  UKIYO-E SPECIFIC LOGIC ERRORS — scan every prompt for these additional failure modes:
+  • Bokashi sky banding: sky gradations (bokashi) must be smooth continuous tone shifts — never harsh horizontal colour bands. If sky is described with a gradient (indigo to pale, dark to light), add "smooth continuous bokashi gradation, no hard banding, no abrupt colour step."
+  • Colour bleed at outlines: in flat woodblock style, colour areas must stay inside their black ink outlines. Add "colour areas contained within black ink outlines, crisp colour boundary, no colour bleed" if flat style is specified.
+  • Wave foam style: ukiyo-e wave foam is flat carved negative space — not photorealistic spray. If waves are in the scene, add "wave foam as flat stylised carved white lines, woodblock tradition — not photorealistic spray, not volumetric 3D foam."
+  • Moonlight as spotlight: moonlight in night scenes must be soft diffuse ambient illumination, not a theatrical spotlight cone pointing downward from the moon. Add "moonlight as soft diffuse ambient illumination, no visible spotlight beam or cone."
+  • Snowfall as noise: snow in woodblock style is spaced circular dots or short diagonal strokes — not photorealistic snowflake crystals, not random noise grain. If snow is falling, add "snowflakes as spaced round dots or short diagonal strokes, woodblock tradition, not random grain."
+  • Cherry blossom petal blur: falling petals must be individually visible small ovals — not a pink blur cloud or noise scatter. Add "individual petals visible as small ovals, loosely scattered, not merged into a pink blur."
+  • Negative space (ma): ukiyo-e uses deliberate empty space. The model tends to fill empty sky, water, and ground with decorative noise. Add "deliberate negative space preserved — empty sky flat and uncluttered, open water undecorated, compositional emptiness is intentional."
+  • Mount Fuji cone symmetry: if Fuji appears, its cone must be gently symmetric with the peak centred above the base. Add "Mount Fuji with symmetric cone, peak centred above mountain base, left and right slopes at matching angles, characteristic snow cap."
+  • Western shading contamination: flat ukiyo-e style must not have photorealistic gradient shading on faces or garments. Add "flat unshaded colour areas, no sphere-shading on faces or garments, outlines define form without gradient fills, Edo woodblock colour discipline."
+  • Kimono collar direction: kimono left collar panel must cross over the right (from viewer perspective) — right-over-left is only for funeral dressing. Whenever kimono or yukata is mentioned, add "kimono collar left panel over right, as worn by the living."
+  • Obi sash placement: the obi should be wide (lower ribs to hip), with the knot tied at the back. Add "wide obi sash from lower ribs to hip, obi-knot at the back, flat front panel visible" if a kimono figure is described.
+  • Torii gate grounding: torii posts must be planted firmly in the ground or standing in water — they must not float above the ground plane. Add "torii gate posts planted firmly in the ground" or "lower third of posts submerged in water" as appropriate.
+  • Roof-wall connection: temple and shrine roofs must sit firmly on their supporting walls with no visible gap. Add "roof eaves seated firmly on wall structure, no gap between roofline and wall."
+  • Accidental bilateral symmetry: without explicit directional cues, the model defaults to dead-centre symmetry. Unless symmetry is intentional, add a compositional offset: "subject positioned slightly right of centre" or "composition weighted to the lower-left third."
+  • Horizon line tilt: when diagonal elements are present (waves, falling snow, wind), the horizon frequently tilts. If a level horizon is correct for the scene, add "horizon line perfectly level, parallel to the canvas edge."
+  • Umbrella tilt in rain: a held open umbrella in rain tilts slightly toward the rain direction — not straight up, not tilted away. Add "umbrella tilted slightly forward into the rain, canopy angled to shed water away from the bearer."
+  • Fan position: a hand-held fan (sensu or uchiwa) must be held at chest height or below the chin — not across the face obscuring eyes or mouth. Add "fan held open at chest height, lower than chin level, figure's face fully visible above the fan."
+  • Candle and flame direction: all candle or incense flames in a scene must lean in the same consistent direction. In still air they point straight up; in wind they lean away from the wind source. Add "all flames pointing in a single consistent direction — [straight upward / leaning left / leaning right]."
+  • Rope catenary: hanging ropes, cords, vines, and chains must curve naturally (catenary) — lower at centre than at attachment points. Never render them as straight rigid diagonal lines. Add "rope in natural catenary curve, hanging lower at centre, flexible — not a straight rigid rod."
+  • Object shadow direction: cast shadows must fall AWAY from the light source, never toward it. If a directional light (sunrise left, lantern right) is present, add "shadows falling [opposite direction to light source], never toward the light."
+  • Prompt instruction leakage: quality and style directive words ("masterwork", "museum quality", "professional") placed mid-sentence inside scene descriptions can render as faint text on surfaces. Move all style/quality directives to the opening phrase before the scene description.
+  • Style name as literal text: style names embedded mid-prompt ("…rendered in ukiyo-e, the fox walked…") can appear as inscribed text on background elements. Consolidate all style terms into an opening preamble: "Fine art Japanese woodblock print, ukiyo-e style — [scene description follows]."
 
 Printable wall art rules — apply these to every prompt:
 - The artwork must fill the entire canvas edge to edge, including all four corners — no blank or cream paper corners, no paper margin, no vignette border. Use natural phrasing such as:
